@@ -10,7 +10,7 @@ case $KERNEL_VERSION in
       KERNEL_REV="884"
       KERNEL_COMMIT="15ffab5493d74b12194e6bfc5bbb1c0f71140155"
       FIRMWARE_COMMIT="9108b7f712f78cbefe45891bfa852d9347989529"
-      ;; 
+      ;;
     "4.9.51")
       KERNEL_REV="1036"
       KERNEL_COMMIT="913eddd6d23f14ce34ae473a4c080c5c840ed583"
@@ -20,7 +20,12 @@ case $KERNEL_VERSION in
       KERNEL_REV="1056"
       KERNEL_COMMIT="e4b56bb7efe47319e9478cfc577647e51c48e909"
       FIRMWARE_COMMIT=$KERNEL_COMMIT
-      ;;  
+      ;;
+    "4.14.50")
+      KERNEL_REV="1122"
+      KERNEL_COMMIT="fe525d2be041c1a9b924824e430b5d51214315c4"
+      FIRMWARE_COMMIT=$KERNEL_COMMIT
+      ;;
 esac
 
 #if [ `getconf LONG_BIT` = "64" ]; then
