@@ -19,7 +19,7 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$WORKDIR/kerne
 cd ..
 ##COMPILED STUFF
 rm $WORKDIR/kernel-$KERNEL_VERSION/lib/modules/${KERNEL_VERSION}-v7+/build
-rm $WORKDIR/kernel-4.9.65/lib/modules/${KERNEL_VERSION}-v7+/source
+rm $WORKDIR/kernel-$KERNEL_VERSION/lib/modules/${KERNEL_VERSION}-v7+/source
 cp $WORKDIR/linux/arch/arm/boot/zImage $WORKDIR/kernel-$KERNEL_VERSION/boot/kernel.img
 cp $WORKDIR/linux/arch/arm/boot/zImage $WORKDIR/kernel-$KERNEL_VERSION/boot/kernel7.img
 cp $WORKDIR/linux/arch/arm/boot/dts/*.dtb $WORKDIR/kernel-$KERNEL_VERSION/boot/
