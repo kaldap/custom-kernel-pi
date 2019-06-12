@@ -1,7 +1,6 @@
 #!/bin/sh
 WORKDIR=$PWD
-#KERNEL_VERSION=$1
-KERNEL_VERSION="4.9.65"
+KERNEL_VERSION=$1
 
 if [ ! -d $WORKDIR/kernel-$KERNEL_VERSION ]; then
   echo "Creating Kernel Archive Folder"

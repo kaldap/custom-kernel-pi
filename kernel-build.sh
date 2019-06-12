@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #KERNEL_VERSION=$1
-KERNEL_VERSION=4.9.65
+KERNEL_VERSION=4.14.50
 WORKDIR=$PWD
 ARCH=`uname -m`
 
@@ -46,7 +46,7 @@ echo "Applying Patches"
 $WORKDIR/apply-patches $KERNEL_VERSION
 
 echo "Compiling Kernel"
-$WORKDIR/compile 
+$WORKDIR/compile $KERNEL_VERSION
 
 echo "Create Kernel Archive"
 $WORKDIR/create-archive $KERNEL_VERSION
