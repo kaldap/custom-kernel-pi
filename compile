@@ -9,20 +9,25 @@ else
   rm -rf $WORKDIR/kernel-$KERNEL_VERSION/*
 fi
 
-echo "Compiling for armv6"
-cd linux
-KERNEL=kernel
-cp arch/arm/configs/bcmrpi_defconfig arch/arm/configs/bcmrpi_defconfig.bak
-#cp $WORKDIR/configurations/$KERNEL_VERSION/rt-kernel $WORKDIR/linux/arch/arm/configs/bcmrpi_defconfig
-make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcmrpi_defconfig
-make -j 4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtb
-make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$WORKDIR/kernel-${KERNEL_VERSION} modules_install
+if [ -d $WORKDIR/overlay/$KERNEL_VERSION ]; then
+	echo "Copying overlay for ${KERNEL_VERSION}"
+	cp -rf $WORKDIR/overlay/$KERNEL_VERSION/* $WORKDIR/linux
+fi
 
-make clean
+#echo "Compiling for armv6"
+cd linux
+#KERNEL=kernel
+##cp arch/arm/configs/bcmrpi_defconfig arch/arm/configs/bcmrpi_defconfig.bak
+##cp $WORKDIR/configurations/$KERNEL_VERSION/rt-kernel $WORKDIR/linux/arch/arm/configs/bcmrpi_defconfig
+#make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcmrpi_defconfig
+#make -j 4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
+#make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$WORKDIR/kernel-${KERNEL_VERSION} modules_install
+
+#make clean
 
 echo "Compiling for armv7"
 KERNEL=kernel7
-cp arch/arm/configs/bcm2709_defconfig arch/arm/configs/bcm2709_defconfig.bak
+#cp arch/arm/configs/bcm2709_defconfig arch/arm/configs/bcm2709_defconfig.bak
 #cp $WORKDIR/configurations/$KERNEL_VERSION/rt-kernel7 $WORKDIR/linux/arch/arm/configs/bcm2709_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
 make -j 4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
