@@ -1,0 +1,85 @@
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 5f53e1f4e8e2..ede924f3ac55 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -806,6 +806,19 @@ config GPIO_PCA953X_IRQ
+ 	  Say yes here to enable the pca953x to be used as an interrupt
+ 	  controller. It requires the driver to be built in the kernel.
+ 
++config GPIO_FXL6408
++        tristate "FXL6408 I/O ports"
++	help
++	  fxl6408 expander support
++
++config GPIO_FXL6408_IRQ
++        bool "Interrupt controller support for FXL6408"
++        depends on GPIO_FXL6408=y
++        select GPIOLIB_IRQCHIP
++        help
++          Say yes here to enable the fxl6408 to be used as an interrupt
++          controller. It requires the driver to be built in the kernel.
++
+ config GPIO_PCF857X
+ 	tristate "PCF857x, PCA{85,96}7x, and MAX732[89] I2C GPIO expanders"
+ 	select GPIOLIB_IRQCHIP
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 726a1550f445..b04a155799ff 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -53,6 +53,7 @@ obj-$(CONFIG_GPIO_ETRAXFS)	+= gpio-etraxfs.o
+ obj-$(CONFIG_GPIO_EXAR)		+= gpio-exar.o
+ obj-$(CONFIG_GPIO_F7188X)	+= gpio-f7188x.o
+ obj-$(CONFIG_GPIO_FTGPIO010)	+= gpio-ftgpio010.o
++obj-$(CONFIG_GPIO_FXL6408)	+= gpio-fxl6408.o
+ obj-$(CONFIG_GPIO_GE_FPGA)	+= gpio-ge.o
+ obj-$(CONFIG_GPIO_GPIO_MM)	+= gpio-gpio-mm.o
+ obj-$(CONFIG_GPIO_GRGPIO)	+= gpio-grgpio.o
+@@ -84,11 +85,11 @@ obj-$(CONFIG_GPIO_MC33880)	+= gpio-mc33880.o
+ obj-$(CONFIG_GPIO_MC9S08DZ60)	+= gpio-mc9s08dz60.o
+ obj-$(CONFIG_GPIO_ML_IOH)	+= gpio-ml-ioh.o
+ obj-$(CONFIG_GPIO_MM_LANTIQ)	+= gpio-mm-lantiq.o
+-obj-$(CONFIG_GPIO_MOCKUP)      += gpio-mockup.o
++obj-$(CONFIG_GPIO_MOCKUP)	+= gpio-mockup.o
+ obj-$(CONFIG_GPIO_MPC5200)	+= gpio-mpc5200.o
+ obj-$(CONFIG_GPIO_MPC8XXX)	+= gpio-mpc8xxx.o
+ obj-$(CONFIG_GPIO_MSIC)		+= gpio-msic.o
+-obj-$(CONFIG_GPIO_MVEBU)        += gpio-mvebu.o
++obj-$(CONFIG_GPIO_MVEBU)	+= gpio-mvebu.o
+ obj-$(CONFIG_GPIO_MXC)		+= gpio-mxc.o
+ obj-$(CONFIG_GPIO_MXS)		+= gpio-mxs.o
+ obj-$(CONFIG_GPIO_OCTEON)	+= gpio-octeon.o
+@@ -153,3 +154,4 @@ obj-$(CONFIG_GPIO_ZEVIO)	+= gpio-zevio.o
+ obj-$(CONFIG_GPIO_ZYNQ)		+= gpio-zynq.o
+ obj-$(CONFIG_GPIO_ZX)		+= gpio-zx.o
+ obj-$(CONFIG_GPIO_LOONGSON1)	+= gpio-loongson1.o
++
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index 52ea34e337cd..907da85495d1 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -696,6 +696,13 @@ config LEDS_NIC78BX
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called leds-nic78bx.
+ 
++config LEDS_KTD2027
++	tristate "LED driver for KTD2027 dimmer"
++	depends on LEDS_CLASS
++	depends on I2C
++	help
++	  This option enables support for KTD2027 LED controller.
++
+ comment "LED Triggers"
+ source "drivers/leds/trigger/Kconfig"
+ 
+diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
+index 35980450db9b..e47dc855de8d 100644
+--- a/drivers/leds/Makefile
++++ b/drivers/leds/Makefile
+@@ -28,6 +28,7 @@ obj-$(CONFIG_LEDS_SUNFIRE)		+= leds-sunfire.o
+ obj-$(CONFIG_LEDS_PCA9532)		+= leds-pca9532.o
+ obj-$(CONFIG_LEDS_GPIO_REGISTER)	+= leds-gpio-register.o
+ obj-$(CONFIG_LEDS_GPIO)			+= leds-gpio.o
++obj-$(CONFIG_LEDS_KTD2027)	+= leds-ktd2027.o
+ obj-$(CONFIG_LEDS_LP3944)		+= leds-lp3944.o
+ obj-$(CONFIG_LEDS_LP3952)		+= leds-lp3952.o
+ obj-$(CONFIG_LEDS_LP55XX_COMMON)	+= leds-lp55xx-common.o
