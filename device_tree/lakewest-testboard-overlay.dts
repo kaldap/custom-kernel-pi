@@ -1,0 +1,189 @@
+/dts-v1/;
+/plugin/;
+
+/{
+  compatible = "brcm,bcm2708";
+
+  fragment@0 {
+    target = <&soc>;
+
+    __overlay__ {
+      reg_exp_vcc: fixedregulator0 {
+        compatible = "regulator-fixed";
+        regulator-name = "reg_exp_vcc";
+        regulator-min-microvolt = <3300000>;
+        regulator-max-microvolt = <3300000>;
+        regulator-boot-on;
+      };
+    };
+  };
+
+  fragment@1 {
+    target = <&gpio>;
+
+    __overlay__ {
+      exp_gpios: exp_gpios {
+        brcm,pins = <42>;
+        brcm,function = <0>;
+        brcm,pull = <2>;
+      };
+
+      goodix_gpios: goodix_gpios {
+        brcm,pins = <34>;
+        brcm,function = <0>;
+        brcm,pull = <1>;
+      };
+
+      encoder_gpios: encoder_gpios {
+        brcm,pins = <38 40>;
+        brcm,function = <0 0>;
+        brcm,pull = <2 2>;
+      };
+    };
+  };
+
+  fragment@2 {
+    target = <&i2c1>;
+
+    __overlay__ {
+      status = "okay";
+      #address-cells = <1>;
+      #size-cells = <0>;
+
+      gpio200: gpio@43 {
+        compatible = "onsemi,fxl6408";
+        reg = <0x43>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&exp_gpios>;
+        clock-frequency = <400000>;
+        interrupt-parent = <&gpio>;
+        interrupts = <42 2>;
+        interrupt-controller;
+        #interrupt-cells = <2>;
+        vcc-supply = <&reg_exp_vcc>;
+        gpio-controller;
+        #gpio-cells = <2>;
+        gpio-line-names = "NC", "RST_DISP", "LCD_EN", "RST_TOUCH", "BTN_DOWN", "BTN_RIGHT", "BTN_UP", "BTN_LEFT";
+
+        unused_line {
+          gpio-hog;
+          gpios = <0 0>;
+          output-low;
+        };
+
+        rst_disp_line {
+          gpio-hog;
+          gpios = <1 0>;
+          output-high;
+        };
+
+        lcd_en_line {
+          gpio-hog;
+          gpios = <2 0>;
+          output-high;
+        };
+      };
+
+      ktd2027: ktd2027@30 {
+        compatible = "kinetic,ktd2027";
+        reg = <0x30>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        backlight@0 {
+          label = "backlight";
+          reg = <0>;
+          linux,default-trigger = "none";
+        };
+
+        backlight@1 {
+          label = "green";
+          reg = <1>;
+          linux,default-trigger = "none";
+        };
+
+        backlight@2 {
+          label = "red";
+          reg = <2>;
+          linux,default-trigger = "none";
+        };
+
+        backlight@3 {
+          label = "blue";
+          reg = <3>;
+          linux,default-trigger = "none";
+        };
+      };
+    };
+  };
+
+  fragment@3 {
+    target = <&i2c0>;
+
+    __overlay__ {
+      status = "okay";
+      #address-cells = <1>;
+      #size-cells = <0>;
+
+      gt911: gt911@14 {
+        compatible = "goodix,gt911";
+        reg = <0x14>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&goodix_gpios>;
+        clock-frequency = <400000>;
+        interrupt-parent = <&gpio>;
+        interrupts = <34 1>;
+        irq-gpios = <&gpio 34 0>;
+        reset-gpios = <&gpio200 3 0>;
+      };
+    };
+  };
+  
+  fragment@4 {
+    target = <&soc>;
+    __overlay__ {
+      front_keypad: keypad {
+        compatible = "gpio-keys";
+        #address-cells = <1>;
+        #size-cells = <0>;
+        button_south {
+          label = "FP Down";
+          linux,code = <0x130>; /* BTN_SOUTH */
+          gpios = <&gpio200 4 1>;
+        };
+        button_east {
+          label = "FP Right";
+          linux,code = <0x131>; /* BTN_EAST */
+          gpios = <&gpio200 5 1>;
+        };
+        button_north {
+          label = "FP Up";
+          linux,code = <0x133>; /* BTN_NORTH */
+          gpios = <&gpio200 6 1>;
+        };
+        button_west {
+          label = "FP Left";
+          linux,code = <0x134>; /* BTN_WEST */
+          gpios = <&gpio200 7 1>;
+        };
+        button_center {
+          label = "FP Center";
+          linux,code = <0x132>; /* BTN_C */
+          gpios = <&gpio 39 1>;
+        };
+      };
+
+      rotary0: rotary0 {
+        compatible = "rotary-encoder";
+        status = "okay";
+        pinctrl-names = "default";
+        pinctrl-0 = <&encoder_gpios>;
+        gpios = <&gpio 40 0>, <&gpio 38 0>;
+        linux,axis = <7>; /* REL_DIAL */
+        rotary-encoder,encoding = "gray";
+        rotary-encoder,relative-axis;
+        rotary-encoder,steps-per-period = <2>;
+      };
+    };
+  };
+};

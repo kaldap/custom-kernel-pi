@@ -1,0 +1,80 @@
+/dts-v1/;
+
+/ {
+  videocore {
+
+    pins_cm3 {
+
+      pin_config {
+
+        pin@default {
+          polarity = "active_high";
+          termination = "pull_down";
+          startup_state = "inactive";
+          function = "input";
+        }; // pin
+
+        // BANK 0 //
+        pin@p0  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p1  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p2  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p3  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p4  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p5  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p6  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p7  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p8  { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p9  { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p10 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p11 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p12 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p13 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p14 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p15 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p16 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p17 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p18 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p19 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p20 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p21 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p22 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p23 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p24 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p25 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p26 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p27 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+
+        // BANK 1 //
+        pin@p28 { function = "i2c0";    termination = "no_pulling"; }; // I2C0
+        pin@p29 { function = "i2c0";    termination = "no_pulling"; }; // I2C0
+        pin@p30 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p31 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p32 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p33 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p34 { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p35 { function = "input";   termination = "pull_up";    }; // NOT USED (DEFAULT STATE)
+        pin@p36 { function = "uart0";   termination = "pull_up";    }; // UART0
+        pin@p37 { function = "uart0";   termination = "pull_up";    }; // UART0
+        pin@p38 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p39 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p40 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p41 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p42 { function = "input";   termination = "pull_down";  }; // NOT USED (DEFAULT STATE)
+        pin@p43 { function = "output";  termination = "no_pulling"; }; // LAN_RESET
+        pin@p44 { function = "i2c1";    termination = "no_pulling"; }; // I2C1_SDA
+        pin@p45 { function = "i2c1";    termination = "no_pulling"; }; // I2C1_SCL
+
+        pin@p46 { function = "input"; termination = "no_pulling"; drive_strength_mA = <8>; polarity = "active_high"; }; // HPD_N
+        pin@p47 { function = "output"; termination = "no_pulling"; drive_strength_mA = <8>; polarity = "active_low"; startup_state = "active"; }; // STATUS LED / EMMC_DISABLE_N CONTROL
+
+      }; // pin_config
+
+      pin_defines {
+        pin_define@LAN_RUN { type = "internal"; number = <43>; }; // LAN_RESET
+        pin_define@HDMI_CONTROL_ATTACHED { type = "internal"; number = <46>; }; // HPD_N
+      }; //  pin_defines
+
+    }; // pins_cm
+
+  }; // videocore
+};

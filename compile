@@ -22,6 +22,12 @@ make -j 4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$WORKDIR/kernel-${KERNEL_VERSION} modules_install
 cd ..
 
+echo "Compiling device tree"
+cd device_tree
+dtc -I dts -O dtb -o dt-blob.bin dt-blob.dts
+dtc -I dts -O dtb -o lakewest-testboard.dtbo lakewest-testboard-overlay.dts
+cd ..
+
 echo "Compiling WiFi module for armv7"
 RELEASE=`cat linux/include/config/kernel.release 2> /dev/null`
 cd rtl8723bu

@@ -29,6 +29,12 @@ cp $WORKDIR/linux/arch/arm/boot/dts/overlays/README $WORKDIR/kernel-$KERNEL_VERS
 cp $WORKDIR/rpi-firmware/*.bin $WORKDIR/kernel-$KERNEL_VERSION/boot/
 cp $WORKDIR/rpi-firmware/*.dat $WORKDIR/kernel-$KERNEL_VERSION/boot/
 cp $WORKDIR/rpi-firmware/*.elf $WORKDIR/kernel-$KERNEL_VERSION/boot/
+#FIRMWARE OVERLAY
+cp $WORKDIR/multifb_fw/*.elf $WORKDIR/kernel-$KERNEL_VERSION/boot/
+cp $WORKDIR/multifb_fw/*.txt $WORKDIR/kernel-$KERNEL_VERSION/boot/
+#DEVICE TREE OVERLAY
+cp $WORKDIR/device_tree/*.dtbo $WORKDIR/kernel-$KERNEL_VERSION/boot/overlays/
+cp $WORKDIR/device_tree/dt-blob.bin $WORKDIR/kernel-$KERNEL_VERSION/boot/
 
 if [ -d $WORKDIR/pi-kernel-$KERNEL_VERSION.tar.gz ]; then
   rm $WORKDIR/pi-kernel-$KERNEL_VERSION.tar.gz
