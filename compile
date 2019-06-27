@@ -14,24 +14,22 @@ if [ -d $WORKDIR/overlay/$KERNEL_VERSION ]; then
 	cp -rf $WORKDIR/overlay/$KERNEL_VERSION/* $WORKDIR/linux
 fi
 
-#echo "Compiling for armv6"
-cd linux
-#KERNEL=kernel
-##cp arch/arm/configs/bcmrpi_defconfig arch/arm/configs/bcmrpi_defconfig.bak
-##cp $WORKDIR/configurations/$KERNEL_VERSION/rt-kernel $WORKDIR/linux/arch/arm/configs/bcmrpi_defconfig
-#make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcmrpi_defconfig
-#make -j 4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
-#make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$WORKDIR/kernel-${KERNEL_VERSION} modules_install
-
-#make clean
-
 echo "Compiling for armv7"
+cd linux
 KERNEL=kernel7
-#cp arch/arm/configs/bcm2709_defconfig arch/arm/configs/bcm2709_defconfig.bak
-#cp $WORKDIR/configurations/$KERNEL_VERSION/rt-kernel7 $WORKDIR/linux/arch/arm/configs/bcm2709_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bcm2709_defconfig
 make -j 4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
-
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$WORKDIR/kernel-${KERNEL_VERSION} modules_install
 cd ..
 
+echo "Compiling WiFi module for armv7"
+RELEASE=`cat linux/include/config/kernel.release 2> /dev/null`
+cd rtl8723bu
+make -j4 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- KSRC=../linux
+install -p -m 644 -D 8723bu.ko $WORKDIR/kernel-${KERNEL_VERSION}/lib/modules/${RELEASE}/kernel/drivers/net/wireless/8723bu.ko
+mkdir -p $WORKDIR/kernel-${KERNEL_VERSION}/lib/firmware/rtl_bt
+install rtl8723b_fw.bin -D $WORKDIR/kernel-${KERNEL_VERSION}/lib/firmware/rtl_bt/rtl8723b_fw.bin
+cd ..
+
+echo "Running depmod"
+/sbin/depmod -b $WORKDIR/kernel-${KERNEL_VERSION} -a ${RELEASE}
